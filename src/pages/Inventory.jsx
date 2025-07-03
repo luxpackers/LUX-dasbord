@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import supabase from '../lib/supabaseClient';
-import Layout from '../components/Layout'; // if using layout wrapper (optional)
+
 
 export default function Inventory() {
   const [countries, setCountries] = useState([]);
