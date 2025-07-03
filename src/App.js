@@ -12,6 +12,7 @@ import Customers from './pages/Customers';
 import CustomerBookings from './pages/CustomerBookings';
 import Login from './pages/Login';
 import './styles.css';
+import CountryPackages from './pages/CountryPackages';
 
 function App() {
   const { user } = useContext(AppContext); // ✅ Now this will work without error
@@ -30,8 +31,10 @@ function App() {
                 <Route path="/sales" element={<Sales />} />
                 <Route path="/users" element={<Users />} />
                 <Route path="/customers" element={<Customers />} />
+                <Route path="/packages/:countryId" element={<CountryPackages />} />
                 <Route path="/customers/:id/bookings" element={<CustomerBookings />} />
                 <Route path="/login" element={<Navigate to="/" />} />
+    
               </Routes>
             </main>
           </div>
