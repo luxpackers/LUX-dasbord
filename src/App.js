@@ -1,4 +1,3 @@
-// App.js
 import { useContext } from 'react';
 import { AppContext } from './context/AppContext'; // make sure this path is correct
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
@@ -13,6 +12,7 @@ import CustomerBookings from './pages/CustomerBookings';
 import Login from './pages/Login';
 import './styles.css';
 import CountryPackages from './pages/CountryPackages';
+import InternshipDashboard from './pages/InternshipDashboard';
 
 function App() {
   const { user } = useContext(AppContext); // ✅ Now this will work without error
@@ -31,10 +31,10 @@ function App() {
                 <Route path="/sales" element={<Sales />} />
                 <Route path="/users" element={<Users />} />
                 <Route path="/customers" element={<Customers />} />
-                <Route path="/packages/:countryId" element={<CountryPackages />} />
                 <Route path="/customers/:id/bookings" element={<CustomerBookings />} />
                 <Route path="/login" element={<Navigate to="/" />} />
-    
+                <Route path="/packages/:id" element={<CountryPackages />} />
+                <Route path="/internship-admin" element={<InternshipDashboard />} />
               </Routes>
             </main>
           </div>
