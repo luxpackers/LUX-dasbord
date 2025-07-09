@@ -13,6 +13,8 @@ import Login from './pages/Login';
 import './styles.css';
 import CountryPackages from './pages/CountryPackages';
 import InternshipDashboard from './pages/InternshipDashboard';
+import FlightInfo from './pages/FlightInfo';
+import AccommodationInfo from './pages/AccommodationInfo';
 
 function App() {
   const { user } = useContext(AppContext); // ✅ Now this will work without error
@@ -35,6 +37,8 @@ function App() {
                 <Route path="/login" element={<Navigate to="/" />} />
                 <Route path="/packages/:id" element={<CountryPackages />} />
                 <Route path="/internship-admin" element={<InternshipDashboard />} />
+                <Route path="/bookings/:bookingId/flights" element={<FlightInfo />} />
+                <Route path="/bookings/:bookingId/accommodations" element={<AccommodationInfo />} />
               </Routes>
             </main>
           </div>
