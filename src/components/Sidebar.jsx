@@ -24,6 +24,7 @@ const Sidebar = () => {
     { name: 'Customers', icon: UserGroupIcon, path: '/customers' },
     { name: 'Reports', icon: ChartBarIcon, path: '/reports' },
     { name: 'Settings', icon: CogIcon, path: '/settings' },
+    { name: 'Internships', icon: BriefcaseIcon, path: '/internship-admin' },
   ];
 
   const handleLogout = () => {
@@ -81,5 +82,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-
 
