@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import supabase from "../lib/supabaseClient";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 const InternshipDashboard = () => {
   const [applications, setApplications] = useState([]);
@@ -29,9 +31,59 @@ const InternshipDashboard = () => {
     setSelectedId((prevId) => (prevId === id ? null : id));
   };
 
+  const exportToExcel = () => {
+    if (typeof window === "undefined") return;
+
+    const exportData = applications.map((app) => ({
+      Name: app.full_name,
+      Email: app.email,
+      Phone: app.phone,
+      Age: app.age,
+      City_State: app.city_state,
+      Instagram: app.instagram_handle,
+      Portfolio: app.portfolio_link,
+      Sample_File: app.sample_file_url,
+      Created_Content: app.created_content,
+      Confident_Skills: app.confident_skills?.join(", "),
+      Reason: app.reason,
+      Reel_Idea: app.reel_idea,
+      Travel_Opinion: app.travel_content_opinion,
+      Camera_Comfort: app.camera_comfort,
+      Obligations: app.obligations,
+      Outdoor_Travel_OK: app.outdoor_travel_comfort,
+      Communication_Mode: app.communication_mode,
+      Referral_Source: app.referral_source,
+      Other_Referral: app.referral_other,
+      Questions: app.questions,
+      Submitted_At: new Date(app.created_at).toLocaleString(),
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Internship Applications");
+
+    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+    const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+    saveAs(blob, "internship_applications.xlsx");
+  };
+
   return (
     <div className="px-4 sm:px-6 md:px-10 py-6 max-w-screen-lg mx-auto">
-      <h1 className="text-xl sm:text-2xl font-bold mb-6 text-center">Internship Applications</h1>
+      <h1 className="text-xl sm:text-2xl font-bold mb-4 text-center">
+        Internship Applications
+      </h1>
+
+      {/* Export Button */}
+      {applications.length > 0 && (
+        <div className="flex justify-center mb-6">
+          <button
+            onClick={exportToExcel}
+            className="px-4 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700"
+          >
+            Export to Excel
+          </button>
+        </div>
+      )}
 
       {loading ? (
         <p className="text-center">Loading...</p>
@@ -44,7 +96,6 @@ const InternshipDashboard = () => {
               key={app.id}
               className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm"
             >
-              {/* Top section */}
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0">
                 <div>
                   <p className="font-semibold text-base sm:text-lg">{app.full_name}</p>
@@ -58,7 +109,6 @@ const InternshipDashboard = () => {
                 </button>
               </div>
 
-              {/* Expanded details */}
               {selectedId === app.id && (
                 <div className="mt-4 text-sm space-y-2 text-gray-800 break-words">
                   <p><strong>Phone:</strong> {app.phone}</p>
@@ -113,5 +163,3 @@ const InternshipDashboard = () => {
 };
 
 export default InternshipDashboard;
-
-
