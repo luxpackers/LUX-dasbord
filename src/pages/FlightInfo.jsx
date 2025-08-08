@@ -17,7 +17,6 @@ export default function FlightInfo() {
     arr_day_offset: 0
   });
 
-  // Fetch existing flights
   useEffect(() => {
     (async () => {
       const { data } = await supabase
@@ -29,23 +28,16 @@ export default function FlightInfo() {
     })();
   }, [bookingId]);
 
-  // Handle form field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((f) => ({ ...f, [name]: value }));
   };
 
-  // Add new flight
   const addFlight = async (e) => {
     e.preventDefault();
     const payload = {
       booking_id: bookingId,
-      flight_date: form.flight_date,
-      flight_no: form.flight_no,
-      origin: form.origin,
-      destination: form.destination,
-      dep_time: form.dep_time,
-      arr_time: form.arr_time,
+      ...form,
       arr_day_offset: parseInt(form.arr_day_offset) || 0
     };
     const { error } = await supabase.from('flights').insert([payload]);
@@ -59,7 +51,6 @@ export default function FlightInfo() {
         arr_time: '',
         arr_day_offset: 0
       });
-      // Refresh list
       const { data } = await supabase
         .from('flights')
         .select('*')
@@ -69,7 +60,6 @@ export default function FlightInfo() {
     }
   };
 
-  // Delete flight
   const deleteFlight = async (id) => {
     if (!window.confirm('Delete this flight?')) return;
     await supabase.from('flights').delete().eq('id', id);
@@ -77,14 +67,15 @@ export default function FlightInfo() {
   };
 
   return (
-    <div className="p-6 max-w-3xl mx-auto">
+    <div className="p-4 sm:p-6 max-w-4xl mx-auto">
       <button
         onClick={() => navigate(-1)}
-        className="mb-4 text-indigo-600 hover:underline"
+        className="mb-4 text-indigo-600 hover:underline text-sm"
       >
         ← Back to Bookings
       </button>
-      <h2 className="text-2xl font-bold mb-4">Flight Details</h2>
+
+      <h2 className="text-xl sm:text-2xl font-bold mb-4">Flight Details</h2>
 
       {/* Flight Form */}
       <form onSubmit={addFlight} className="grid gap-4 bg-white p-4 rounded shadow">
@@ -96,11 +87,10 @@ export default function FlightInfo() {
               name="flight_date"
               value={form.flight_date}
               onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
+              className="border rounded px-2 py-1 w-full text-sm"
               required
             />
           </div>
-
           <div>
             <label className="block text-sm font-medium">Flight No</label>
             <input
@@ -109,7 +99,7 @@ export default function FlightInfo() {
               value={form.flight_no}
               onChange={handleChange}
               placeholder="e.g. SQ 505"
-              className="border rounded px-2 py-1 w-full"
+              className="border rounded px-2 py-1 w-full text-sm"
               required
             />
           </div>
@@ -124,7 +114,7 @@ export default function FlightInfo() {
               value={form.origin}
               onChange={handleChange}
               placeholder="e.g. AMD"
-              className="border rounded px-2 py-1 w-full"
+              className="border rounded px-2 py-1 w-full text-sm"
               required
             />
           </div>
@@ -136,7 +126,7 @@ export default function FlightInfo() {
               value={form.destination}
               onChange={handleChange}
               placeholder="e.g. SIN"
-              className="border rounded px-2 py-1 w-full"
+              className="border rounded px-2 py-1 w-full text-sm"
               required
             />
           </div>
@@ -150,7 +140,7 @@ export default function FlightInfo() {
               name="dep_time"
               value={form.dep_time}
               onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
+              className="border rounded px-2 py-1 w-full text-sm"
               required
             />
           </div>
@@ -161,7 +151,7 @@ export default function FlightInfo() {
               name="arr_time"
               value={form.arr_time}
               onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
+              className="border rounded px-2 py-1 w-full text-sm"
               required
             />
           </div>
@@ -173,29 +163,29 @@ export default function FlightInfo() {
               min="0"
               value={form.arr_day_offset}
               onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
+              className="border rounded px-2 py-1 w-full text-sm"
             />
           </div>
         </div>
 
         <button
           type="submit"
-          className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+          className="bg-indigo-600 text-white px-4 py-2 rounded text-sm hover:bg-indigo-700"
         >
           Add Flight
         </button>
       </form>
 
-      {/* Flights Table */}
+      {/* Responsive Table */}
       <div className="mt-6 overflow-x-auto bg-white rounded shadow">
         <table className="min-w-full text-sm">
-          <thead className="bg-gray-100">
+          <thead className="bg-gray-100 text-xs sm:text-sm">
             <tr>
-              <th className="px-4 py-2">Date</th>
-              <th className="px-4 py-2">Flight</th>
-              <th className="px-4 py-2">Route</th>
-              <th className="px-4 py-2">Time</th>
-              <th className="px-4 py-2">Actions</th>
+              <th className="px-4 py-2 text-left">Date</th>
+              <th className="px-4 py-2 text-left">Flight</th>
+              <th className="px-4 py-2 text-left">Route</th>
+              <th className="px-4 py-2 text-left">Time</th>
+              <th className="px-4 py-2 text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -204,7 +194,7 @@ export default function FlightInfo() {
                 <td className="px-4 py-2">
                   {new Date(f.flight_date).toLocaleDateString(undefined, {
                     day: 'numeric',
-                    month: 'long',
+                    month: 'short',
                     year: 'numeric'
                   })}
                 </td>
@@ -213,7 +203,7 @@ export default function FlightInfo() {
                   {f.origin} → {f.destination}
                 </td>
                 <td className="px-4 py-2">
-                  DEP: {f.dep_time.slice(0, 5)} → ARR: {f.arr_time.slice(0, 5)}
+                  {f.dep_time.slice(0, 5)} → {f.arr_time.slice(0, 5)}
                   {f.arr_day_offset > 0 && ` (+${f.arr_day_offset})`}
                 </td>
                 <td className="px-4 py-2">
@@ -232,3 +222,5 @@ export default function FlightInfo() {
     </div>
   );
 }
+
+
