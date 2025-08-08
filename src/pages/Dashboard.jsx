@@ -9,7 +9,7 @@ const Dashboard = () => {
   const { setCurrentPage, packages, sales } = useContext(AppContext);
 
   useEffect(() => {
-    setCurrentPage('Dashboard');
+    setCurrentPage('   ');
   }, [setCurrentPage]);
 
   // Calculate total sales
@@ -124,5 +124,6 @@ const Dashboard = () => {
     </div>
   );
 };
+
 
 export default Dashboard;
