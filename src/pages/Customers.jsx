@@ -28,7 +28,7 @@ export default function Customers() {
       return;
     }
 
-    const { data, error } = await supabase.from('customers').insert([newCustomer]);
+    const { error } = await supabase.from('customers').insert([newCustomer]);
     if (error) {
       console.error('Insert error:', error.message);
       alert('Could not add customer');
@@ -73,95 +73,99 @@ export default function Customers() {
   };
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">Customers</h1>
+    <div className="px-4 sm:px-6 md:px-8 py-6 max-w-screen-lg mx-auto">
+      <h1 className="text-xl sm:text-2xl font-bold mb-4 text-gray-800">Customers</h1>
 
-      <div className="mb-6 flex gap-4">
+      {/* Form */}
+      <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         <input
-          className="border p-2 rounded w-1/4"
+          className="border p-2 rounded w-full"
           placeholder="Name"
           value={newCustomer.name}
           onChange={(e) => setNewCustomer({ ...newCustomer, name: e.target.value })}
         />
         <input
-          className="border p-2 rounded w-1/4"
+          className="border p-2 rounded w-full"
           placeholder="Email"
           value={newCustomer.email}
           onChange={(e) => setNewCustomer({ ...newCustomer, email: e.target.value })}
         />
         <input
-          className="border p-2 rounded w-1/4"
+          className="border p-2 rounded w-full"
           placeholder="Phone"
           value={newCustomer.phone}
           onChange={(e) => setNewCustomer({ ...newCustomer, phone: e.target.value })}
         />
         <button
-          className="bg-indigo-600 text-white px-4 py-2 rounded"
+          className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
           onClick={addCustomer}
         >
-          Add Customer
+          Add
         </button>
       </div>
 
-      <table className="min-w-full bg-white rounded shadow">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="py-2 px-4 text-left">Name</th>
-            <th className="py-2 px-4 text-left">Email</th>
-            <th className="py-2 px-4 text-left">Phone</th>
-            <th className="py-2 px-4 text-left">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {customers.map((c) => (
-            <tr key={c.id} className="border-t">
-              {editingId === c.id ? (
-                <>
-                  <td className="py-2 px-4">
-                    <input value={editData.name} onChange={(e) => setEditData({ ...editData, name: e.target.value })} className="border p-1 rounded w-full" />
-                  </td>
-                  <td className="py-2 px-4">
-                    <input value={editData.email} onChange={(e) => setEditData({ ...editData, email: e.target.value })} className="border p-1 rounded w-full" />
-                  </td>
-                  <td className="py-2 px-4">
-                    <input value={editData.phone} onChange={(e) => setEditData({ ...editData, phone: e.target.value })} className="border p-1 rounded w-full" />
-                  </td>
-                  <td className="py-2 px-4 flex gap-2">
-                    <button onClick={() => updateCustomer(c.id)} className="bg-green-500 text-white px-2 py-1 rounded">Save</button>
-                    <button onClick={cancelEdit} className="bg-gray-400 text-white px-2 py-1 rounded">Cancel</button>
-                  </td>
-                </>
-              ) : (
-                <>
-                  <td className="py-2 px-4">{c.name}</td>
-                  <td className="py-2 px-4">{c.email}</td>
-                  <td className="py-2 px-4">{c.phone}</td>
-                  <td className="py-2 px-4 flex gap-2">
-                    <button
-                      className="bg-blue-500 text-white px-2 py-1 rounded"
-                      onClick={() => navigate(`/customers/${c.id}/bookings`)}
-                    >
-                      View Bookings
-                    </button>
-                    <button
-                      className="bg-yellow-500 text-white px-2 py-1 rounded"
-                      onClick={() => startEdit(c)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="bg-red-600 text-white px-2 py-1 rounded"
-                      onClick={() => deleteCustomer(c.id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </>
-              )}
+      {/* Table */}
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white rounded shadow text-sm">
+          <thead>
+            <tr className="bg-gray-100 text-left">
+              <th className="py-2 px-4">Name</th>
+              <th className="py-2 px-4">Email</th>
+              <th className="py-2 px-4">Phone</th>
+              <th className="py-2 px-4">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {customers.map((c) => (
+              <tr key={c.id} className="border-t">
+                {editingId === c.id ? (
+                  <>
+                    <td className="py-2 px-4">
+                      <input value={editData.name} onChange={(e) => setEditData({ ...editData, name: e.target.value })} className="border p-1 rounded w-full" />
+                    </td>
+                    <td className="py-2 px-4">
+                      <input value={editData.email} onChange={(e) => setEditData({ ...editData, email: e.target.value })} className="border p-1 rounded w-full" />
+                    </td>
+                    <td className="py-2 px-4">
+                      <input value={editData.phone} onChange={(e) => setEditData({ ...editData, phone: e.target.value })} className="border p-1 rounded w-full" />
+                    </td>
+                    <td className="py-2 px-4 flex flex-wrap gap-2">
+                      <button onClick={() => updateCustomer(c.id)} className="bg-green-500 text-white px-2 py-1 rounded">Save</button>
+                      <button onClick={cancelEdit} className="bg-gray-400 text-white px-2 py-1 rounded">Cancel</button>
+                    </td>
+                  </>
+                ) : (
+                  <>
+                    <td className="py-2 px-4">{c.name}</td>
+                    <td className="py-2 px-4">{c.email}</td>
+                    <td className="py-2 px-4">{c.phone}</td>
+                    <td className="py-2 px-4 flex flex-wrap gap-2">
+                      <button
+                        className="bg-blue-500 text-white px-2 py-1 rounded"
+                        onClick={() => navigate(`/customers/${c.id}/bookings`)}
+                      >
+                        View
+                      </button>
+                      <button
+                        className="bg-yellow-500 text-white px-2 py-1 rounded"
+                        onClick={() => startEdit(c)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="bg-red-600 text-white px-2 py-1 rounded"
+                        onClick={() => deleteCustomer(c.id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
