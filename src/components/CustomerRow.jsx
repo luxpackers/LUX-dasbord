@@ -44,79 +44,163 @@ export default function CustomerRow({ customer, onUpdate }) {
   };
 
   return (
-    <tr className="border-t">
-      <td className="py-2 px-4">
-        {editMode ? (
-          <input
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-            className="border p-1 rounded w-full"
-          />
-        ) : (
-          form.name
-        )}
-      </td>
-      <td className="py-2 px-4">
-        {editMode ? (
-          <input
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className="border p-1 rounded w-full"
-          />
-        ) : (
-          form.email
-        )}
-      </td>
-      <td className="py-2 px-4">
-        {editMode ? (
-          <input
-            value={form.phone}
-            onChange={(e) => setForm({ ...form, phone: e.target.value })}
-            className="border p-1 rounded w-full"
-          />
-        ) : (
-          form.phone
-        )}
-      </td>
-      <td className="py-2 px-4 space-x-2">
-        {editMode ? (
-          <>
-            <button
-              className="bg-green-500 text-white px-2 py-1 rounded"
-              onClick={saveEdit}
-            >
-              Save
-            </button>
-            <button
-              className="bg-gray-400 text-white px-2 py-1 rounded"
-              onClick={() => setEditMode(false)}
-            >
-              Cancel
-            </button>
-          </>
-        ) : (
-          <>
-            <button
-              className="bg-yellow-500 text-white px-2 py-1 rounded"
-              onClick={() => setEditMode(true)}
-            >
-              Edit
-            </button>
-            <button
-              className="bg-red-600 text-white px-2 py-1 rounded"
-              onClick={deleteCustomer}
-            >
-              Delete
-            </button>
-            <button
-              className="bg-blue-500 text-white px-2 py-1 rounded"
-              onClick={() => navigate(`/customers/${customer.id}/bookings`)}
-            >
-              View Bookings
-            </button>
-          </>
-        )}
-      </td>
-    </tr>
+    <>
+      {/* 🌐 Desktop View */}
+      <tr className="hidden sm:table-row border-t">
+        <td className="py-2 px-4">
+          {editMode ? (
+            <input
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              className="border p-1 rounded w-full"
+            />
+          ) : (
+            form.name
+          )}
+        </td>
+        <td className="py-2 px-4">
+          {editMode ? (
+            <input
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              className="border p-1 rounded w-full"
+            />
+          ) : (
+            form.email
+          )}
+        </td>
+        <td className="py-2 px-4">
+          {editMode ? (
+            <input
+              value={form.phone}
+              onChange={(e) => setForm({ ...form, phone: e.target.value })}
+              className="border p-1 rounded w-full"
+            />
+          ) : (
+            form.phone
+          )}
+        </td>
+        <td className="py-2 px-4 space-x-2">
+          {editMode ? (
+            <>
+              <button
+                className="bg-green-500 text-white px-2 py-1 rounded"
+                onClick={saveEdit}
+              >
+                Save
+              </button>
+              <button
+                className="bg-gray-400 text-white px-2 py-1 rounded"
+                onClick={() => setEditMode(false)}
+              >
+                Cancel
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                className="bg-yellow-500 text-white px-2 py-1 rounded"
+                onClick={() => setEditMode(true)}
+              >
+                Edit
+              </button>
+              <button
+                className="bg-red-600 text-white px-2 py-1 rounded"
+                onClick={deleteCustomer}
+              >
+                Delete
+              </button>
+              <button
+                className="bg-blue-500 text-white px-2 py-1 rounded"
+                onClick={() => navigate(`/customers/${customer.id}/bookings`)}
+              >
+                View Bookings
+              </button>
+            </>
+          )}
+        </td>
+      </tr>
+
+      {/* 📱 Mobile View */}
+      <div className="sm:hidden border rounded p-4 my-2 bg-white shadow">
+        <div className="mb-2">
+          <strong>Name:</strong>{" "}
+          {editMode ? (
+            <input
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              className="border p-1 rounded w-full"
+            />
+          ) : (
+            form.name
+          )}
+        </div>
+        <div className="mb-2">
+          <strong>Email:</strong>{" "}
+          {editMode ? (
+            <input
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              className="border p-1 rounded w-full"
+            />
+          ) : (
+            form.email
+          )}
+        </div>
+        <div className="mb-2">
+          <strong>Phone:</strong>{" "}
+          {editMode ? (
+            <input
+              value={form.phone}
+              onChange={(e) => setForm({ ...form, phone: e.target.value })}
+              className="border p-1 rounded w-full"
+            />
+          ) : (
+            form.phone
+          )}
+        </div>
+
+        <div className="flex flex-wrap gap-2 mt-3">
+          {editMode ? (
+            <>
+              <button
+                className="bg-green-500 text-white px-3 py-1 rounded w-full"
+                onClick={saveEdit}
+              >
+                Save
+              </button>
+              <button
+                className="bg-gray-400 text-white px-3 py-1 rounded w-full"
+                onClick={() => setEditMode(false)}
+              >
+                Cancel
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                className="bg-yellow-500 text-white px-3 py-1 rounded w-full"
+                onClick={() => setEditMode(true)}
+              >
+                Edit
+              </button>
+              <button
+                className="bg-red-600 text-white px-3 py-1 rounded w-full"
+                onClick={deleteCustomer}
+              >
+                Delete
+              </button>
+              <button
+                className="bg-blue-500 text-white px-3 py-1 rounded w-full"
+                onClick={() => navigate(`/customers/${customer.id}/bookings`)}
+              >
+                View Bookings
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    </>
   );
 }
+
