@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import supabase from "../lib/supabaseClient";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 const InternshipDashboard = () => {
   const [applications, setApplications] = useState([]);
@@ -29,10 +31,57 @@ const InternshipDashboard = () => {
     setSelectedId((prevId) => (prevId === id ? null : id));
   };
 
+  const exportToExcel = () => {
+    const exportData = applications.map((app) => ({
+      Name: app.full_name,
+      Email: app.email,
+      Phone: app.phone,
+      Age: app.age,
+      City_State: app.city_state,
+      Instagram: app.instagram_handle,
+      Portfolio_Link: app.portfolio_link,
+      Sample_File: app.sample_file_url,
+      Created_Content: app.created_content,
+      Confident_Skills: app.confident_skills?.join(", "),
+      Reason: app.reason,
+      Reel_Idea: app.reel_idea,
+      Travel_Content_Opinion: app.travel_content_opinion,
+      Camera_Comfort: app.camera_comfort,
+      Obligations: app.obligations,
+      Outdoor_Travel_Comfort: app.outdoor_travel_comfort,
+      Communication_Mode: app.communication_mode,
+      Referral_Source: app.referral_source,
+      Referral_Other: app.referral_other,
+      Questions: app.questions,
+      Submitted_On: new Date(app.created_at).toLocaleString(),
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Internship Applications");
+
+    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+    const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+    saveAs(blob, "internship_applications.xlsx");
+  };
+
   return (
     <div className="px-4 sm:px-6 md:px-10 py-6 max-w-screen-lg mx-auto">
       <h1 className="text-xl sm:text-2xl font-bold mb-6 text-center">Internship Applications</h1>
 
+      {/* Export Button */}
+      {!loading && applications.length > 0 && (
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={exportToExcel}
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          >
+            Export to Excel
+          </button>
+        </div>
+      )}
+
+      {/* Content */}
       {loading ? (
         <p className="text-center">Loading...</p>
       ) : applications.length === 0 ? (
