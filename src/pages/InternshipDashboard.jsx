@@ -30,48 +30,60 @@ const InternshipDashboard = () => {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Internship Applications</h1>
+    <div className="px-4 sm:px-6 md:px-10 py-6 max-w-screen-lg mx-auto">
+      <h1 className="text-xl sm:text-2xl font-bold mb-6 text-center">Internship Applications</h1>
+
       {loading ? (
-        <p>Loading...</p>
+        <p className="text-center">Loading...</p>
       ) : applications.length === 0 ? (
-        <p>No applications found.</p>
+        <p className="text-center">No applications found.</p>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-5">
           {applications.map((app) => (
             <div
               key={app.id}
-              className="p-4 bg-white border border-gray-300 rounded-lg shadow-sm"
+              className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm"
             >
-              <div className="flex justify-between items-center">
+              {/* Top section */}
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0">
                 <div>
-                  <p className="font-semibold">{app.full_name}</p>
-                  <p className="text-gray-600 text-sm">{app.email}</p>
+                  <p className="font-semibold text-base sm:text-lg">{app.full_name}</p>
+                  <p className="text-gray-600 text-sm break-all">{app.email}</p>
                 </div>
                 <button
                   onClick={() => toggleDetails(app.id)}
-                  className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 text-sm"
+                  className="px-4 py-2 bg-indigo-600 text-white text-sm rounded hover:bg-indigo-700 w-full sm:w-auto"
                 >
                   {selectedId === app.id ? "Hide Details" : "View Details"}
                 </button>
               </div>
 
-              {/* Conditional full details */}
+              {/* Expanded details */}
               {selectedId === app.id && (
-                <div className="mt-4 text-sm space-y-1">
+                <div className="mt-4 text-sm space-y-2 text-gray-800 break-words">
                   <p><strong>Phone:</strong> {app.phone}</p>
                   <p><strong>Age:</strong> {app.age}</p>
                   <p><strong>City & State:</strong> {app.city_state}</p>
                   <p><strong>Instagram:</strong> {app.instagram_handle}</p>
                   <p>
                     <strong>Portfolio:</strong>{" "}
-                    <a href={app.portfolio_link} target="_blank" className="text-blue-600 underline">
+                    <a
+                      href={app.portfolio_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 underline break-all"
+                    >
                       {app.portfolio_link}
                     </a>
                   </p>
                   <p>
                     <strong>Sample Content:</strong>{" "}
-                    <a href={app.sample_file_url} target="_blank" className="text-blue-600 underline">
+                    <a
+                      href={app.sample_file_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 underline break-all"
+                    >
                       {app.sample_file_url}
                     </a>
                   </p>
@@ -101,4 +113,5 @@ const InternshipDashboard = () => {
 };
 
 export default InternshipDashboard;
+
 
