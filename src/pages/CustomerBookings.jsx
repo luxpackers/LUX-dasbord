@@ -42,7 +42,7 @@ export default function CustomerBookings() {
 
   return (
     <div className="px-4 sm:px-6 md:px-10 py-6 max-w-screen-xl mx-auto">
-      <h2 className="text-xl sm:text-2xl font-bold mb-4 text-gray-800">
+      <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-4 text-gray-800">
         Bookings for <span className="text-primary">{customer?.name || '...'}</span>
       </h2>
 
@@ -58,3 +58,5 @@ export default function CustomerBookings() {
     </div>
   );
 }
+
+
