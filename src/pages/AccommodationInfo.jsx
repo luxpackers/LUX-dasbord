@@ -17,7 +17,6 @@ export default function AccommodationInfo() {
     confirmation_no: ''
   });
 
-  // Fetch existing accommodations
   useEffect(() => {
     (async () => {
       const { data } = await supabase
@@ -29,19 +28,16 @@ export default function AccommodationInfo() {
     })();
   }, [bookingId]);
 
-  // Handler to update form fields
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((f) => ({ ...f, [name]: value }));
   };
 
-  // Add a new accommodation
   const addAccommodation = async (e) => {
     e.preventDefault();
     const payload = { booking_id: bookingId, ...form };
     const { error } = await supabase.from('accommodations').insert([payload]);
     if (!error) {
-      // clear form
       setForm({
         start_date: '',
         end_date: '',
@@ -51,7 +47,6 @@ export default function AccommodationInfo() {
         nights: '',
         confirmation_no: ''
       });
-      // refresh list
       const { data } = await supabase
         .from('accommodations')
         .select('*')
@@ -61,7 +56,6 @@ export default function AccommodationInfo() {
     }
   };
 
-  // Delete handler (single declaration)
   const deleteOne = async (id) => {
     if (!window.confirm('Delete this accommodation?')) return;
     await supabase.from('accommodations').delete().eq('id', id);
@@ -69,21 +63,21 @@ export default function AccommodationInfo() {
   };
 
   return (
-    <div className="p-6 max-w-3xl mx-auto">
+    <div className="p-4 sm:p-6 max-w-4xl mx-auto">
       <button
         onClick={() => navigate(-1)}
         className="mb-4 text-indigo-600 hover:underline"
       >
         ← Back to Bookings
       </button>
-      <h2 className="text-2xl font-bold mb-4">Accommodation Details</h2>
+      <h2 className="text-xl sm:text-2xl font-bold mb-4">Accommodation Details</h2>
 
       {/* Form */}
       <form
         onSubmit={addAccommodation}
         className="space-y-4 bg-white p-4 rounded shadow"
       >
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium mb-1">Start Date</label>
             <input
@@ -91,7 +85,7 @@ export default function AccommodationInfo() {
               name="start_date"
               value={form.start_date}
               onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
+              className="border rounded px-3 py-2 w-full"
               required
             />
           </div>
@@ -102,7 +96,7 @@ export default function AccommodationInfo() {
               name="end_date"
               value={form.end_date}
               onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
+              className="border rounded px-3 py-2 w-full"
               required
             />
           </div>
@@ -115,24 +109,24 @@ export default function AccommodationInfo() {
           <input
             type="text"
             name="hotel_name"
-            placeholder="Hotel & name"
+            placeholder="Hotel name"
             value={form.hotel_name}
             onChange={handleChange}
-            className="border rounded px-2 py-1 w-full mb-2"
+            className="border rounded px-3 py-2 w-full mb-2"
             required
           />
           <input
             type="text"
             name="address"
-            placeholder="Address details"
+            placeholder="Address"
             value={form.address}
             onChange={handleChange}
-            className="border rounded px-2 py-1 w-full"
+            className="border rounded px-3 py-2 w-full"
             required
           />
         </div>
 
-        <div className="grid sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
             <label className="block text-sm font-medium mb-1">Room Type</label>
             <input
@@ -141,7 +135,7 @@ export default function AccommodationInfo() {
               placeholder="e.g. OWN BOOKED"
               value={form.room_type}
               onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
+              className="border rounded px-3 py-2 w-full"
               required
             />
           </div>
@@ -153,7 +147,7 @@ export default function AccommodationInfo() {
               placeholder="e.g. 3N"
               value={form.nights}
               onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
+              className="border rounded px-3 py-2 w-full"
               required
             />
           </div>
@@ -162,10 +156,10 @@ export default function AccommodationInfo() {
             <input
               type="text"
               name="confirmation_no"
-              placeholder="e.g. OWN BOOKED"
+              placeholder="Optional"
               value={form.confirmation_no}
               onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
+              className="border rounded px-3 py-2 w-full"
             />
           </div>
         </div>
@@ -180,15 +174,15 @@ export default function AccommodationInfo() {
 
       {/* Table */}
       <div className="mt-6 overflow-x-auto bg-white rounded shadow">
-        <table className="min-w-full text-sm">
-          <thead className="bg-gray-100">
+        <table className="min-w-full text-sm text-left border-collapse">
+          <thead className="bg-gray-100 text-xs uppercase tracking-wider text-gray-600">
             <tr>
-              <th className="px-4 py-2">Period</th>
-              <th className="px-4 py-2">Hotel & Address</th>
-              <th className="px-4 py-2">Room Type</th>
-              <th className="px-4 py-2">Nights</th>
-              <th className="px-4 py-2">Confirmation #</th>
-              <th className="px-4 py-2">Actions</th>
+              <th className="px-4 py-2 whitespace-nowrap">Period</th>
+              <th className="px-4 py-2 whitespace-nowrap">Hotel & Address</th>
+              <th className="px-4 py-2 whitespace-nowrap">Room Type</th>
+              <th className="px-4 py-2 whitespace-nowrap">Nights</th>
+              <th className="px-4 py-2 whitespace-nowrap">Confirmation #</th>
+              <th className="px-4 py-2 whitespace-nowrap">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -229,4 +223,3 @@ export default function AccommodationInfo() {
     </div>
   );
 }
-
