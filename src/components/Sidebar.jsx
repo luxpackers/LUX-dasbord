@@ -81,5 +81,7 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar; make it so it colapese on its own on mobile  
+export default Sidebar;
+
+
 
