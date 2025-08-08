@@ -58,7 +58,7 @@ export default function BookingForm({ customerId, packages, onAdd }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Package & Booking Date */}
-      <div className="grid sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Package
@@ -93,7 +93,7 @@ export default function BookingForm({ customerId, packages, onAdd }) {
       </div>
 
       {/* Trip Start & End Dates */}
-      <div className="grid sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Trip Start Date
@@ -135,23 +135,25 @@ export default function BookingForm({ customerId, packages, onAdd }) {
       </div>
 
       {/* Passenger Names */}
-      {form.passenger_names.map((name, index) => (
-        <div key={index}>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Passenger {index + 1} Name
-          </label>
-          <input
-            type="text"
-            className="border rounded px-3 py-2 w-full"
-            value={name}
-            onChange={(e) => handlePassengerChange(index, e.target.value)}
-            required
-          />
-        </div>
-      ))}
+      <div className="space-y-4">
+        {form.passenger_names.map((name, index) => (
+          <div key={index}>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Passenger {index + 1} Name
+            </label>
+            <input
+              type="text"
+              className="border rounded px-3 py-2 w-full"
+              value={name}
+              onChange={(e) => handlePassengerChange(index, e.target.value)}
+              required
+            />
+          </div>
+        ))}
+      </div>
 
       {/* Amount Paid & Remaining */}
-      <div className="grid sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Amount Paid
@@ -177,12 +179,15 @@ export default function BookingForm({ customerId, packages, onAdd }) {
         </div>
       </div>
 
-      <button
-        type="submit"
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-      >
-        Add Booking
-      </button>
+      {/* Submit Button */}
+      <div>
+        <button
+          type="submit"
+          className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded text-sm"
+        >
+          Add Booking
+        </button>
+      </div>
     </form>
   );
 }
