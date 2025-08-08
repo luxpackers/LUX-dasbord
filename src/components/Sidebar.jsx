@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 import {
@@ -16,20 +16,6 @@ const Sidebar = () => {
   const { sidebarOpen, setSidebarOpen } = useContext(AppContext);
   const navigate = useNavigate();
 
-  // Collapse sidebar on mount if screen is small (mobile)
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setSidebarOpen(false);
-      }
-    };
-
-    handleResize(); // Run once on mount
-    window.addEventListener('resize', handleResize); // Optional: auto-collapse on window resize
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, [setSidebarOpen]);
-
   const navItems = [
     { name: 'Dashboard', icon: HomeIcon, path: '/' },
     { name: 'Inventory', icon: BriefcaseIcon, path: '/inventory' },
@@ -42,43 +28,36 @@ const Sidebar = () => {
   ];
 
   const handleLogout = () => {
-    localStorage.removeItem('lux_user');
-    navigate('/login');
-    window.location.reload();
+    localStorage.removeItem('lux_user'); // ✅ Clear the correct key
+    navigate('/login'); // ✅ Go to login page
+    window.location.reload(); // ✅ Optional: force refresh to clear UI state
   };
 
   return (
-    <div
-      className={`${
-        sidebarOpen ? 'w-64' : 'w-20'
-      } bg-indigo-800 text-white transition-all duration-300 flex flex-col min-h-screen fixed md:static z-50`}
-    >
+    <div className={`${sidebarOpen ? 'w-64' : 'w-20'} bg-indigo-800 text-white transition-all duration-300 flex flex-col`}>
       <div className="p-4 flex items-center justify-between border-b border-indigo-700">
         {sidebarOpen ? (
           <h1 className="text-2xl font-bold">LuxPackers</h1>
         ) : (
           <h1 className="text-2xl font-bold">LP</h1>
         )}
-        <button
+        <button 
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="p-1 rounded-lg hover:bg-indigo-700 md:hidden" // Only show toggle on mobile
+          className="p-1 rounded-lg hover:bg-indigo-700"
         >
           {sidebarOpen ? '«' : '»'}
         </button>
       </div>
-
-      <nav className="flex-1 mt-6 overflow-y-auto">
+      
+      <nav className="flex-1 mt-6">
         <ul>
           {navItems.map((item, index) => (
             <li key={index} className="mb-2">
               <NavLink
                 to={item.path}
-                className={({ isActive }) =>
-                  `flex items-center p-3 ${
-                    sidebarOpen ? 'px-6' : 'px-3 justify-center'
-                  } ${
-                    isActive ? 'bg-indigo-900' : 'hover:bg-indigo-700'
-                  } rounded-lg transition-colors`
+                className={({ isActive }) => 
+                  `flex items-center p-3 ${sidebarOpen ? 'px-6' : 'px-3 justify-center'} 
+                  ${isActive ? 'bg-indigo-900' : 'hover:bg-indigo-700'} rounded-lg transition-colors`
                 }
               >
                 <item.icon className="h-6 w-6" />
@@ -88,7 +67,7 @@ const Sidebar = () => {
           ))}
         </ul>
       </nav>
-
+      
       <div className="p-4 border-t border-indigo-700">
         <button
           onClick={handleLogout}
@@ -102,6 +81,5 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
-
+export default Sidebar; make it so it colapese on its own on mobile  
 
